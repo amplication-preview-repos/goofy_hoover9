@@ -1,0 +1,26 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Partner {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  isAvailable Boolean?
+  name        String?
+  matches     Match[]
+}
+
+model Match {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isMatched Boolean?
+  partner   Partner? @relation(fields: [partnerId], references: [id])
+  partnerId String?
+}
